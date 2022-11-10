@@ -21,7 +21,11 @@ abstract class FlutterMpvPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<MpvHolderEntity> createSurface() {
-    throw UnimplementedError('createSurface() has not been implemented.');
+  Future<MpvHolderEntity> create() {
+    throw UnimplementedError('create() has not been implemented.');
+  }
+
+  Future dispose(int textureId) {
+    throw UnimplementedError('dispose() has not been implemented.');
   }
 }

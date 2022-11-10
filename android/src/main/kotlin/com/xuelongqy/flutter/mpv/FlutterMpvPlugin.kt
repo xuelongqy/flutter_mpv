@@ -31,8 +31,8 @@ class FlutterMpvPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onMethodCall(call: MethodCall, result: Result) {
     when (call.method) {
-        "createSurface" -> {
-          createSurface(result)
+        "create" -> {
+          create(result)
         }
         "dispose" -> {
           dispose(call, result)
@@ -43,21 +43,21 @@ class FlutterMpvPlugin: FlutterPlugin, MethodCallHandler {
     }
   }
 
+  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
+    channel.setMethodCallHandler(null)
+  }
+
   @SuppressLint("Recycle")
-  private fun createSurface(result: Result) {
+  private fun create(result: Result) {
     val surfaceTextureEntry = flutterPluginBinding.textureRegistry.createSurfaceTexture()
     val surface = Surface(surfaceTextureEntry.surfaceTexture())
     surfaceMap[surfaceTextureEntry.id()] = surface
-    result.success(mapOf("textureId" to surfaceTextureEntry.id(), "wid" to System.identityHashCode(surface)))
+    result.success(mapOf("textureId" to surfaceTextureEntry.id(), "wid" to FlutterMpvJni.getSurfaceWid(surface)))
   }
 
   private fun dispose(call: MethodCall, result: Result) {
-    val textureId = call.argument<Long>("textureId")!!
+    val textureId = call.arguments as Long
     surfaceMap[textureId]!!.release()
     result.success(null)
-  }
-
-  override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
   }
 }

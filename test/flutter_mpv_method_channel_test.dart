@@ -21,7 +21,7 @@ void main() {
     channel.setMockMethodCallHandler(null);
   });
 
-  test('createSurface', () async {
-    expect((await platform.createSurface()).textureId, 0);
+  test('create', () async {
+    expect((await platform.create()).textureId, 0);
   });
 }
