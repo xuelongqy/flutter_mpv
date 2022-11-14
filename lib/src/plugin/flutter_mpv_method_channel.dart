@@ -7,15 +7,14 @@ class MethodChannelFlutterMpv extends FlutterMpvPlatform {
   final methodChannel = const MethodChannel('com.xuelongqy.flutter.mpv');
 
   @override
-  Future<MpvHolderEntity> create() async {
-    final data = await methodChannel.invokeMethod<Map>('create');
-    print(data);
+  Future<MpvHolderEntity> create(int mpvHandle) async {
+    final data = await methodChannel.invokeMethod<Map>('create', mpvHandle);
     return MpvHolderEntity.fromJson(data);
   }
 
   @override
-  Future dispose(int textureId) async {
-    final data = await methodChannel.invokeMethod('dispose', textureId);
+  Future dispose(MpvHolderEntity mpvHolder) async {
+    final data = await methodChannel.invokeMethod('dispose', mpvHolder.toJson());
     return MpvHolderEntity.fromJson(data);
   }
 }

@@ -1,5 +1,15 @@
 cmake_minimum_required(VERSION 3.4.1)
 
+add_library(
+        libmpv
+        SHARED
+        IMPORTED)
+
+set_target_properties(
+        libmpv
+        PROPERTIES IMPORTED_LOCATION
+        ${CMAKE_SOURCE_DIR}../../../../libmpv/${ANDROID_ABI}/libmpv.so )
+
 add_library( # Sets the name of the library.
         flutter-mpv-lib
 
@@ -18,6 +28,7 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
         flutter-mpv-lib
+        libmpv
 
         # Links the target library to the log library
         # included in the NDK.

@@ -5,6 +5,7 @@ class FlutterMpvJni {
         init {
             System.loadLibrary("flutter-mpv-lib")
         }
-        external fun getSurfaceWid(self: Any): Long
+        external fun getSurfaceWid(mpvHandle: Long, _surface: Any): Long
+        external fun removeSurfaceWid(mpvHandle: Long)
     }
 }

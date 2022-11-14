@@ -1,6 +1,8 @@
 package com.xuelongqy.flutter.mpv
 
 import android.annotation.SuppressLint
+import android.content.ComponentName
+import android.content.Intent
 import android.view.Surface
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -11,6 +13,11 @@ import io.flutter.plugin.common.MethodChannel.Result
 
 /** FlutterMpvPlugin */
 class FlutterMpvPlugin: FlutterPlugin, MethodCallHandler {
+  companion object {
+    lateinit var call: MethodCall
+    lateinit var result: Result
+  }
+
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -30,9 +37,11 @@ class FlutterMpvPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
+    FlutterMpvPlugin.call = call
+    FlutterMpvPlugin.result = result
     when (call.method) {
         "create" -> {
-          create(result)
+          create(call, result)
         }
         "dispose" -> {
           dispose(call, result)
@@ -48,15 +57,22 @@ class FlutterMpvPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   @SuppressLint("Recycle")
-  private fun create(result: Result) {
+  private fun create(call: MethodCall, result: Result) {
+//    val intent = Intent()
+//    intent.component = ComponentName(flutterPluginBinding.applicationContext, "com.xuelongqy.mpv.flutter_mpv_example.MpvActivity")
+//    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//    flutterPluginBinding.applicationContext.startActivity(intent)
+    val mpvHandle = call.arguments as Long
     val surfaceTextureEntry = flutterPluginBinding.textureRegistry.createSurfaceTexture()
     val surface = Surface(surfaceTextureEntry.surfaceTexture())
     surfaceMap[surfaceTextureEntry.id()] = surface
-    result.success(mapOf("textureId" to surfaceTextureEntry.id(), "wid" to FlutterMpvJni.getSurfaceWid(surface)))
+    result.success(mapOf("textureId" to surfaceTextureEntry.id(), "wid" to FlutterMpvJni.getSurfaceWid(mpvHandle, surface), "mpvHandle" to mpvHandle))
   }
 
   private fun dispose(call: MethodCall, result: Result) {
-    val textureId = call.arguments as Long
+    val textureId = call.argument<Long>("textureId")!!
+    val mpvHandle = call.argument<Long>("mpvHandle")!!
+    FlutterMpvJni.removeSurfaceWid(mpvHandle);
     surfaceMap[textureId]!!.release()
     result.success(null)
   }

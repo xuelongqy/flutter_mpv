@@ -23,23 +23,21 @@ class _MpvPlayerState extends State<MpvPlayer> {
   void dispose() {
     super.dispose();
     if (_mpvHolder != null) {
-      _flutterMpv.dispose(_mpvHolder!.textureId);
+      _flutterMpv.dispose(_mpvHolder!);
     }
-    _mpvBinding.mpv_destroy(_mpv);
+    _mpvBinding.mpv_terminate_destroy(_mpv);
   }
 
   Future _create() async {
     _mpv = _mpvBinding.mpv_create();
-    _mpvHolder = await _flutterMpv.create();
-    _setOptionString('terminal', 'yes');
-    _setOptionString('msg-level', 'all=v');
+    _mpvHolder = await _flutterMpv.create(_mpv.address);
     _setOptionString("vo", "gpu");
     _setOptionString("gpu-context", "android");
-    _setOptionString('hwdec', 'auto');
+    // _setOptionString('hwdec', 'auto');
     // _mpvBinding.mpv_set_option(_mpv, 'hwdec'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_NODE, _buildMpvNode('hwdec').cast<Void>());
     _setOptionString("hwdec-codecs", "h264,hevc,mpeg4,mpeg2video,vp8,vp9");
     _setOptionString("ao", "audiotrack,opensles");
-    _setOptionString("tls-verify", "yes");
+    // _setOptionString("tls-verify", "yes");
     _setOptionString("input-default-bindings", "yes");
     _setOptionString("demuxer-max-bytes", "${64 * 1024 * 1024}");
     _setOptionString("demuxer-max-back-bytes", "${64 * 1024 * 1024}");
@@ -47,12 +45,13 @@ class _MpvPlayerState extends State<MpvPlayer> {
     _mpvBinding.mpv_initialize(_mpv);
     _mpvBinding.mpv_observe_property(_mpv, 0, 'duration'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_DOUBLE);
     _mpvBinding.mpv_observe_property(_mpv, 0, 'time-pos'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_DOUBLE);
-    final widPointer = malloc.call<Int>(1)..value = _mpvHolder!.wid;
-    print(widPointer.value);
+    final widPointer = malloc.call<Int64>(1)..value = _mpvHolder!.wid;
     _mpvBinding.mpv_set_option(_mpv, 'wid'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_INT64, widPointer.cast<Void>());
+    malloc.free(widPointer);
+    _setOptionString("force-window", "yes");
     final args = malloc.call<Pointer<Char>>(3);
     args[0] = 'loadfile'.toNativeUtf8().cast<Char>();
-    args[1] = 'https://viide-filestore.oss-cn-hangzhou.aliyuncs.com/dev/mp4/1437808580.mp4'.toNativeUtf8().cast<Char>();
+    args[1] = 'https://sample-videos.com/video123/mkv/720/big_buck_bunny_720p_10mb.mkv'.toNativeUtf8().cast<Char>();
     args[2] = nullptr;
     _mpvBinding.mpv_command_async(_mpv, 0, args);
     setState(() {});

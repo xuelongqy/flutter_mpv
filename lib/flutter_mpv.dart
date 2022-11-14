@@ -4,6 +4,7 @@ import 'dart:ffi';
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mpv/mpv_bindings.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
