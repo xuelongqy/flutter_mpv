@@ -35,16 +35,16 @@ class _MpvPlayerState extends State<MpvPlayer> {
     _setOptionString("gpu-context", "android");
     // _setOptionString('hwdec', 'auto');
     // _mpvBinding.mpv_set_option(_mpv, 'hwdec'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_NODE, _buildMpvNode('hwdec').cast<Void>());
-    _setOptionString("hwdec-codecs", "h264,hevc,mpeg4,mpeg2video,vp8,vp9");
-    _setOptionString("ao", "audiotrack,opensles");
-    // _setOptionString("tls-verify", "yes");
-    _setOptionString("input-default-bindings", "yes");
-    _setOptionString("demuxer-max-bytes", "${64 * 1024 * 1024}");
-    _setOptionString("demuxer-max-back-bytes", "${64 * 1024 * 1024}");
-    _setOptionString("vd-lavc-dr", "no");
+    // _setOptionString("hwdec-codecs", "h264,hevc,mpeg4,mpeg2video,vp8,vp9");
+    // _setOptionString("ao", "audiotrack,opensles");
+    // // _setOptionString("tls-verify", "yes");
+    // _setOptionString("input-default-bindings", "yes");
+    // _setOptionString("demuxer-max-bytes", "${64 * 1024 * 1024}");
+    // _setOptionString("demuxer-max-back-bytes", "${64 * 1024 * 1024}");
+    // _setOptionString("vd-lavc-dr", "no");
     _mpvBinding.mpv_initialize(_mpv);
-    _mpvBinding.mpv_observe_property(_mpv, 0, 'duration'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_DOUBLE);
-    _mpvBinding.mpv_observe_property(_mpv, 0, 'time-pos'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_DOUBLE);
+    // _mpvBinding.mpv_observe_property(_mpv, 0, 'duration'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_DOUBLE);
+    // _mpvBinding.mpv_observe_property(_mpv, 0, 'time-pos'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_DOUBLE);
     final widPointer = malloc.call<Int64>(1)..value = _mpvHolder!.wid;
     _mpvBinding.mpv_set_option(_mpv, 'wid'.toNativeUtf8().cast<Char>(), mpv_format.MPV_FORMAT_INT64, widPointer.cast<Void>());
     malloc.free(widPointer);
@@ -53,7 +53,7 @@ class _MpvPlayerState extends State<MpvPlayer> {
     args[0] = 'loadfile'.toNativeUtf8().cast<Char>();
     args[1] = 'https://sample-videos.com/video123/mkv/720/big_buck_bunny_720p_10mb.mkv'.toNativeUtf8().cast<Char>();
     args[2] = nullptr;
-    _mpvBinding.mpv_command_async(_mpv, 0, args);
+    _mpvBinding.mpv_command(_mpv, args);
     setState(() {});
   }
 

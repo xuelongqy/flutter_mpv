@@ -8,7 +8,7 @@ add_library(
 set_target_properties(
         libmpv
         PROPERTIES IMPORTED_LOCATION
-        ${CMAKE_SOURCE_DIR}../../../../libmpv/${ANDROID_ABI}/libmpv.so )
+        ${CMAKE_SOURCE_DIR}/../../../libmpv/${ANDROID_ABI}/libmpv.so )
 
 add_library( # Sets the name of the library.
         flutter-mpv-lib

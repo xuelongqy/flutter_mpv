@@ -7,10 +7,20 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 class MPVView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback {
-
     override fun surfaceCreated(holder: SurfaceHolder) {
+        Log.w("ssss", "attaching surface")
         val mpvHandle = FlutterMpvPlugin.call.arguments as Long
-        FlutterMpvPlugin.result.success(mapOf("textureId" to 1, "wid" to FlutterMpvJni.getSurfaceWid(mpvHandle, holder.surface), "mpvHandle" to mpvHandle))
+        FlutterMpvJni.getSurfaceWid(mpvHandle, holder.surface)
+//        MPVLib.create(this.context)
+//        MPVLib.setOptionString("vo", "gpu")
+//        MPVLib.setOptionString("gpu-context", "android")
+//        MPVLib.init()
+//        MPVLib.setOptionString("save-position-on-quit", "no")
+//        MPVLib.setOptionString("force-window", "no")
+//        MPVLib.attachSurface(holder.surface)
+//        // This forces mpv to render subs/osd/whatever into our surface even if it would ordinarily not
+//        MPVLib.setOptionString("force-window", "yes")
+//        MPVLib.command(arrayOf("loadfile", "https://viide-filestore.oss-cn-hangzhou.aliyuncs.com/dev/mp4/1349333442.mp4"))
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {

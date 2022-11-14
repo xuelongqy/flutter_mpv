@@ -1,5 +1,6 @@
 package com.xuelongqy.flutter.mpv
 
+import `is`.xyz.mpv.MPVLib
 import android.annotation.SuppressLint
 import android.content.ComponentName
 import android.content.Intent
@@ -31,6 +32,7 @@ class FlutterMpvPlugin: FlutterPlugin, MethodCallHandler {
   private val surfaceMap = hashMapOf<Long, Surface>()
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    MPVLib.create(flutterPluginBinding.applicationContext)
     this.flutterPluginBinding = flutterPluginBinding
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "com.xuelongqy.flutter.mpv")
     channel.setMethodCallHandler(this)
