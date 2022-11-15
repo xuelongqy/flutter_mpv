@@ -52,7 +52,7 @@ class _MpvPlayerState extends State<MpvPlayer> {
     _setOptionString("force-window", "yes");
     final args = malloc.call<Pointer<Char>>(3);
     args[0] = 'loadfile'.toNativeUtf8().cast<Char>();
-    args[1] = 'https://viide-filestore.oss-cn-hangzhou.aliyuncs.com/dev/mp4/1349333442.mp4'.toNativeUtf8().cast<Char>();
+    args[1] = 'https://sample-videos.com/video123/mkv/720/big_buck_bunny_720p_10mb.mkv'.toNativeUtf8().cast<Char>();
     args[2] = nullptr;
     _mpvBinding.mpv_command_async(_mpv, 0, args);
     setState(() {});

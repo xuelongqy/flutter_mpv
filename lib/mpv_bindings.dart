@@ -9,6 +9,8 @@ class MpvBinding {
   static ffi.DynamicLibrary get dynamicLibrary {
     if (Platform.isWindows) {
       return ffi.DynamicLibrary.open('mpv-2.dll');
+    } else if (Platform.isMacOS) {
+      return ffi.DynamicLibrary.open('libmpv.dylib');
     }
     return ffi.DynamicLibrary.open('libmpv.so');
   }

@@ -17,7 +17,10 @@ Mpv player for Flutter.
   s.source_files     = 'Classes/**/*'
   s.dependency 'FlutterMacOS'
 
-  s.platform = :osx, '10.11'
+  # Node
+  s.vendored_libraries = 'Frameworks/libmpv.dylib'
+
+  s.platform = :osx, '10.13'
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
   s.swift_version = '5.0'
 end
