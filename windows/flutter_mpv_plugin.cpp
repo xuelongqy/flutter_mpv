@@ -16,11 +16,14 @@
 namespace flutter_mpv {
 
 // static
+flutter::PluginRegistrarWindows* FlutterMpvPlugin::mRegistrar = nullptr;
+
 void FlutterMpvPlugin::RegisterWithRegistrar(
     flutter::PluginRegistrarWindows *registrar) {
+  FlutterMpvPlugin::mRegistrar = registrar;
   auto channel =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-          registrar->messenger(), "flutter_mpv",
+          registrar->messenger(), "com.xuelongqy.flutter.mpv",
           &flutter::StandardMethodCodec::GetInstance());
 
   auto plugin = std::make_unique<FlutterMpvPlugin>();
@@ -40,20 +43,20 @@ FlutterMpvPlugin::~FlutterMpvPlugin() {}
 void FlutterMpvPlugin::HandleMethodCall(
     const flutter::MethodCall<flutter::EncodableValue> &method_call,
     std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result) {
-  if (method_call.method_name().compare("getPlatformVersion") == 0) {
-    std::ostringstream version_stream;
-    version_stream << "Windows ";
-    if (IsWindows10OrGreater()) {
-      version_stream << "10+";
-    } else if (IsWindows8OrGreater()) {
-      version_stream << "8";
-    } else if (IsWindows7OrGreater()) {
-      version_stream << "7";
-    }
-    result->Success(flutter::EncodableValue(version_stream.str()));
+  if (method_call.method_name().compare("create") == 0) {
+    result->Success(flutter::EncodableMap(create(method_call)));
   } else {
     result->NotImplemented();
   }
+}
+
+std::map<flutter::EncodableValue, flutter::EncodableValue> FlutterMpvPlugin::create(
+    const flutter::MethodCall<flutter::EncodableValue>& method_call) {
+    std::map<flutter::EncodableValue, flutter::EncodableValue> resultMap;
+    resultMap[flutter::EncodableValue("textureId")] = flutter::EncodableValue(0);
+    resultMap[flutter::EncodableValue("wid")] = flutter::EncodableValue(0);
+    resultMap[flutter::EncodableValue("mpvHandle")] = flutter::EncodableValue(method_call.arguments()->LongValue());
+    return resultMap;
 }
 
 }  // namespace flutter_mpv

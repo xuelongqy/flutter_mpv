@@ -10,6 +10,7 @@ namespace flutter_mpv {
 
 class FlutterMpvPlugin : public flutter::Plugin {
  public:
+  static flutter::PluginRegistrarWindows* mRegistrar;
   static void RegisterWithRegistrar(flutter::PluginRegistrarWindows *registrar);
 
   FlutterMpvPlugin();
@@ -25,6 +26,9 @@ class FlutterMpvPlugin : public flutter::Plugin {
   void HandleMethodCall(
       const flutter::MethodCall<flutter::EncodableValue> &method_call,
       std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>> result);
+
+  std::map<flutter::EncodableValue, flutter::EncodableValue> create(
+      const flutter::MethodCall<flutter::EncodableValue>& method_call);
 };
 
 }  // namespace flutter_mpv

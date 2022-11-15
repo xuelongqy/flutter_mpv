@@ -9,8 +9,7 @@ import android.view.SurfaceView
 class MPVView(context: Context, attrs: AttributeSet) : SurfaceView(context, attrs), SurfaceHolder.Callback {
     override fun surfaceCreated(holder: SurfaceHolder) {
         Log.w("ssss", "attaching surface")
-        val mpvHandle = FlutterMpvPlugin.call.arguments as Long
-        FlutterMpvJni.getSurfaceWid(mpvHandle, holder.surface)
+        FlutterMpvJni.getSurfaceWid(0, holder.surface)
 //        MPVLib.create(this.context)
 //        MPVLib.setOptionString("vo", "gpu")
 //        MPVLib.setOptionString("gpu-context", "android")
